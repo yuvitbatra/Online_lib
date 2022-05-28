@@ -1,0 +1,56 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Sign up
+{% endblock %}
+
+{% block main %}
+<section class="vh-100">
+    <div class="container py-5 h-100">
+      <div class="row d-flex align-items-center justify-content-center h-100">
+        <div class="col-md-8 col-lg-7 col-xl-6">
+          <img src="static/e81a7985_2.jpg" style = 'width: 180%;' alt="Phone image">
+        </div>
+        <br><br><br>
+        <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+          <p id = 'id' style="color: White; float: left; width: fit-content;">Sign up</p>
+          <lottie-player src="https://assets3.lottiefiles.com/packages/lf20_x0wfumk0.json"  background="transparent"  speed="1"  style="width: 70px; height: 70px;"  loop  autoplay id = 'happy'></lottie-player>
+          <form method="POST" action = '/register'>
+              <br><br><br><br><br>
+            <!-- Username input -->
+            <div class="form-outline mb-4 size">
+              <label class="form-label" for="form1Example13" style="color: White;">Username</label>
+              <input type="text" required id="form1Example13" name = username class="form-control form-control-lg" />
+            </div>
+
+            <div class="form-outline mb-4 size">
+                <label class="form-label" for="form1Example23" style="color: White;">Phone number</label>
+                <input type="tel" required id="form1Example23" name="phone_number" class="form-control form-control-lg" />
+              </div>
+
+              <div class="form-outline mb-4 size">
+                <label class="form-label" for="form1Example23" style="color: White;">Email</label>
+                <input type ="email"  required name = email id="form1Example23" class="form-control form-control-lg" />
+              </div>
+
+              <div class="form-outline mb-4 size">
+                <label class="form-label" for="form1Example23" style="color: White;">Address</label>
+                <input type="text" required name = address id="form1Example23" class="form-control form-control-lg" />
+              </div>
+
+            <!-- Password input -->
+            <div class="form-outline mb-4 size">
+              <label class="form-label" for="form1Example23" style="color: White;">Password</label>
+              <input type="password" id="form1Example23" required name = password class="form-control form-control-lg" />
+            </div>
+  
+            <div class="form-outline mb-4 size">
+                <label class="form-label" for="form1Example23" style="color: White;">Confirm password</label>
+                <input type="password" required name = confirmation id="form1Example23" class="form-control form-control-lg" />
+              </div>
+              <br>
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Register</button>
+        <p style="color: rgb(254, 19, 19); font-family: 'Cormorant Garamond', serif; font-size: 30px;"><b>{{message}}</b></p>
+            
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    book
+{% endblock %}
+{% block main %}
+<div style="float: left; width:50%;">
+          <p class = 'size'>Hello {{user}}, to collect your book please get in the touch with one of the following:</p>
+          {% for i in number %}
+            <p class = 'size'><b style="font-family :Koulen, cursive;">Phone number:</b> {{i[0]}}
+            <p class = 'size'><b style="font-family :Koulen, cursive;">Address:</b> {{i[1]}}
+            <br><br>
+          {% endfor %}
+</div>
+<div style="float: right; width: auto;">
+  <lottie-player src="https://assets5.lottiefiles.com/private_files/lf30_osruuwol.json"  background="transparent"  speed="1"  style="width: 600px; height: 600px;"  loop  autoplay></lottie-player>
+</div>
+{% endblock %}
+    

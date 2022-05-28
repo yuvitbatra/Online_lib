@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Browse
+{% endblock %}
+
+{% block main %}
+    <div style="float: left; width: 100%;">
+        <form action = '/browse' method="post">
+            <input type="text" id="form1Example13" name = title  placeholder = title>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+    <br><br><br>
+    <div class = 'column half'>
+        {% for j in l %}
+                <p><img src = {{j}}></p>
+                <br><br>
+        {% endfor %}
+    </div>
+    <div class="column last books">
+        {% for i in value %}
+            <p>
+                <b style = 'font-family :Koulen, cursive;'>Title:</b> 
+                {{i[0]}}
+            </p>
+            <p>
+                <b style = 'font-family :Koulen, cursive;'>Author:</b>
+                {{i[1]}}
+            </p>
+            <p>
+                <b style = 'font-family :Koulen, cursive;'>Genre</b>(As described by uploader):
+                {{i[3]}}
+            </p>
+            <p>
+                <b style = 'font-family :Koulen, cursive;'>To borrow:</b>
+                <a href = 'get_book/{{i[0]}}'>Click Here</a>
+            </p>
+            <br><br><br>
+        {% endfor %}
+    </div>
+     
+{% endblock %}

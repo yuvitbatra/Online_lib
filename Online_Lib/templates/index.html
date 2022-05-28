@@ -1,0 +1,106 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    HomePage
+{% endblock %}
+
+{% block main %}
+    <p id = 'title' class="center">Welcome to Open Book</p>
+    <div style="width: 100%;">
+        <div style="float:left; width:40%;">
+            <p class = 'heading'><b>What is this?</b></p>
+            <br>
+            <p class = size>Hello everyone, this is an online library
+                designed for everyone to allow easy access to different
+                books. Anyone can access these books free of cost and enjoy them.
+            </p>
+            <br><br>
+            <p class = 'heading'><b>Designer</b></p>
+            <br>
+            <img src = '/static/image0.jpeg' height="160px" style="float: left; width:27%;">
+            <p style="float:left; width:70%;" class = size> &nbsp;This website has been desined by Yuvit &nbsp;Batra, a
+                                                            student of AIS Noida, with the &nbsp;objective to help 
+                                                            everyone enjoy their &nbsp;favourite books free of cost
+                                                            and help the less &nbsp;privliged to get access to good quality
+                                                            &nbsp;content.
+                                                            </p>
+             <img src = '/static/download.jfif' height = '300px' width="500px"> 
+        </div>
+        <div style = 'float:right; width: 40%;'>
+            <lottie-player src="https://assets5.lottiefiles.com/private_files/lf30_ygsplxrn.json"  background="transparent"  speed="1"  style="width: 300px; height: 300px;"  loop autoplay></lottie-player>
+        </div>
+        <div style = 'float:right; width: 55%;'>
+            <p class = 'heading' style = 'text-align: center;'><b>Features of our website</b></p>
+            <p class="size">This website has several Features to explore
+                            some of them are as follows:-
+                            <ol>
+                                <li class = 'size'>
+                                    <b style = 'font-family :Koulen, cursive;'>Home:</b>
+                                    We our currently on the HomePage of
+                                    the webite. This part tells us about
+                                    the features of the page, the Designer,
+                                    the purpose of this page etc. 
+                                </li>
+                                <br>
+                                <li class = 'size'>
+                                    <b style = 'font-family :Koulen, cursive;'>Browse:</b>
+                                    This is the part of the webapplication
+                                    where you can see the different books available
+                                    for renting.
+                                </li>
+                                <br>
+                                <li class = 'size'>
+                                    <b style = 'font-family :Koulen, cursive;'>Login:</b>
+                                    This helps you login to our website and helps in allowing you
+                                    to rent and provide books for renting.
+                                </li>
+                                <br>
+                                <li class = 'size'>
+                                    <b style = 'font-family :Koulen, cursive;'>Remove:</b>
+                                    This allows you to remove a book that you had previously added.
+                                </li>
+                                <br>
+                                <li class = 'size'>
+                                    <b style = 'font-family :Koulen, cursive;'>To Rent:</b>
+                                    Here you can upload books to share and help this small little community
+                                    to grow.
+                                </li>
+                            </ol>
+            </p>
+        </div>
+    </div>
+    <div style= 'float: right; width: 80%;'>
+        <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_csvzkoqe.json"  background="transparent"  speed="1"  style="width: 700px; height: 700px;"  loop  autoplay></lottie-player>
+        <p id = 'largest' style="font-family: 'Lobster', cursive;">Enjoy Reading</p>
+    </div>
+    {% if show == 1 %}
+        <script>
+            alert("YOU HAVE LOGGED IN!")
+        </script>
+    {% endif %}
+    {% if already == 1 %}
+        <script>
+            alert("YOU ARE ALREADY LOGGED IN PLEASE LOGOUT FIRST")
+        </script>
+    {% endif %}
+    {% if log_out == 1 %}
+        <script>
+            alert("YOU HAVE BEEN LOGGED OUT")
+        </script>
+    {% endif %}
+    {% if incorrect == 1 %}
+        <script>
+            alert("OTP IS INCORRECT")
+        </script>
+    {% endif %}
+    {% if change == 1 %}
+        <script>
+            alert("Password changed, now please log-in with new password")
+        </script>
+    {% endif %}
+    {% if mss == 1 %}
+        <script>
+            alert("Book added")
+        </script>
+    {% endif %}
+{% endblock %}

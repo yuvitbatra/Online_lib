@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Remove book
+{% endblock %}
+
+{% block main %}
+<form action = '/remove' method = post name = hope>
+    <table style="width:100%" class = size>
+        <tr>
+            <th>      </th>
+            <th>Title </th>
+            <th>author</th>
+            <th>ISBN  </th>
+            <th>Genre </th>
+        </tr>
+        {% for i in data%}
+        <tr>
+            <td></td>
+            <td>{{i[2]}}</td>
+            <td>{{i[3]}}</td>
+            <td>{{i[4]}}</td>
+            <td>{{i[5]}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br><br>
+    <div style="text-align:center" class = size>
+    <input type="text" id="form1Example13" name = title  placeholder = title>
+    </div>
+    <br><br>
+    <div style="text-align:center">  
+        <button type="submit" class="btn btn-primary btn-lg" id = "final" name = final>Remove</button>
+    </div>
+    <p style="color: rgb(254, 19, 19); font-family: 'Cormorant Garamond', serif; font-size: 30px;"><b>Please enter name of book as above to delete</b></p>
+    <p style="color: rgb(254, 19, 19); font-family: 'Cormorant Garamond', serif; font-size: 30px;"><b>{{yuvit}}</b></p>
+
+    
+</form>
+{% endblock %}

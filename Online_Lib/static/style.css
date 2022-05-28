@@ -1,0 +1,63 @@
+#title{
+    font-family: 'Dancing Script', cursive;
+    font-size: 100px;
+    text-align: center;
+}
+
+
+.heading{
+    font-family: 'Cormorant Garamond', serif;
+    font-size:xx-large;
+    background-color: #ADD0B3;
+}
+
+.size{
+    font-size: large;
+}
+
+#largest{
+    font-size: 100px;
+}
+
+.white{
+    background-color: #ffffff;
+}
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
+}
+
+#id{
+    font-family: 'Cormorant Garamond', serif;
+    font-size:50px;
+}
+
+#happy{
+    float: left;
+    width: 70%;
+}
+
+.column { float: left; }
+.half { width: 20%; }
+.last { float: left; width: auto; }
+
+.books{
+font-family: 'Cormorant Garamond', serif;
+    font-size:xx-large;
+}
+
+tr {
+    border-bottom: 1px solid #ddd;
+  }
+
+#final{
+    align-items: center;
+}
+tr td:first-child:before
+{
+  counter-increment: Serial;      /* Increment the Serial counter */
+  content:  counter(Serial); /* Display the counter */
+}
