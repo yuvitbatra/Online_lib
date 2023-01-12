@@ -12,7 +12,7 @@
           <img src="static/e81a7985_2.jpg" style = 'width: 190%;' alt="Phone image">
         </div>
         <br><br><br>
-        <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+        <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1" style="position:absolute;margin-left: 40%;">
           <p id = 'id' style="color: White;">Password recovery</p>
           <form method="POST" action = '/forgot'>
             <!-- Username input -->
@@ -23,4 +23,5 @@
             <br><br>
             <!-- Submit button -->
             <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+            <p style="color: rgb(254, 19, 19); font-family: 'Cormorant Garamond', serif; font-size: 30px;"><b>{{wronger}}</b></p>
 {% endblock %}

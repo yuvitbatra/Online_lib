@@ -14,13 +14,13 @@
             <th>ISBN  </th>
             <th>Genre </th>
         </tr>
-        {% for i in data%}
+        {% for i in data %}
         <tr>
             <td></td>
+            <td>{{i[1]}}</td>
             <td>{{i[2]}}</td>
             <td>{{i[3]}}</td>
             <td>{{i[4]}}</td>
-            <td>{{i[5]}}</td>
         </tr>
         {% endfor %}
     </table>
@@ -33,8 +33,6 @@
         <button type="submit" class="btn btn-primary btn-lg" id = "final" name = final>Remove</button>
     </div>
     <p style="color: rgb(254, 19, 19); font-family: 'Cormorant Garamond', serif; font-size: 30px;"><b>Please enter name of book as above to delete</b></p>
-    <p style="color: rgb(254, 19, 19); font-family: 'Cormorant Garamond', serif; font-size: 30px;"><b>{{yuvit}}</b></p>
-
-    
+    <p style="color: rgb(254, 19, 19); font-family: 'Cormorant Garamond', serif; font-size: 30px;"><b>{{yuvit}}</b></p>    
 </form>
 {% endblock %}

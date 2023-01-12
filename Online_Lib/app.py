@@ -1,4 +1,4 @@
-import sqlite3
+import pymysql
 import smtplib, ssl
 
 from flask import Flask,render_template,request,session,redirect
@@ -12,7 +12,7 @@ app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config['SECRET_KEY'] = 'data_management'
 
-c = sqlite3.connect('database.db',check_same_thread=False)
+c = pymysql.connect(host = 'localhost',user='root', password= 'Sandeepbatra1', database='world')
 db = c.cursor()
 
 
@@ -25,6 +25,7 @@ password_data = ''
 user = ''
 finish = ''
 incorrect = 0
+wronger = ''
 show = 0
 already = 0
 count = 0
@@ -38,7 +39,6 @@ var = otp()
 value = ''
 
 db.execute('''CREATE TABLE IF NOT EXISTS users(
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
               username TEXT NOT NULL,
               password TEXT NOT NULL,
               email TEXT NOT NULL,
@@ -46,11 +46,11 @@ db.execute('''CREATE TABLE IF NOT EXISTS users(
               address TEXT NOT NULL)''')
 
 db.execute('''CREATE TABLE IF NOT EXISTS books_data(
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
                username TEXT NOT NULL,
                title TEXT NOT NULL,
                author TEXT NOT NULL,
                ISBN TEXT NOT NULL,
+               about TEXT,
                genre TEXT NOT NULL)''')
 
 c.commit()
@@ -65,16 +65,19 @@ def login():
         if 'username' not in session:
             return render_template('login.html')
         return render_template('index.html',already = 1)
-
+    print("YO")
     name = request.form.get('username')
     password = request.form.get('password')
     print(name, password, 'hello')
-    check = db.execute('SELECT password FROM users WHERE username = (?) ',(name,)).fetchone()
-    checker = db.execute("SELECT username FROM users WHERE username = (?)", (name,)).fetchone()
+    check = db.execute('SELECT password FROM users WHERE username = %s' ,(name,))
+    password_1 = db.fetchone()
+    checker = db.execute("SELECT username FROM users WHERE username = %s" ,(name,))
     print(checker,check)
-    if checker == None:
+    if checker == 0:
         return render_template('login.html',response = 'Username or password incorrect')
-    if password not in check:
+    print('username correct')
+    print(password_1)
+    if password not in password_1:
         return render_template('login.html',response = 'Username or password incorrect')
     session['username'] = name
     user = name
@@ -93,11 +96,11 @@ def register():
     email = request.form.get('email')
     phone_number = request.form.get('phone_number')
     address = request.form.get('address')
-    check = db.execute('SELECT username FROM users WHERE username = (?) ',(name,)).fetchone()
+    check = db.execute('SELECT username FROM users WHERE username = %s', (name,))
     print(check)
     if confirmation == password:
-        if check == None:
-            db.execute("INSERT INTO users(username, password, email, phone_number, address) VALUES (?, ?, ?, ?, ?)", (name, password, email, phone_number, address))
+        if check == 0:
+            db.execute("INSERT INTO users(username, password, email, phone_number, address) VALUES (%s, %s, %s, %s, %s)" ,(name, password, email, phone_number, address))
             c.commit()
             return render_template('login.html',response = 'Registration complete please sign in to continue')
     return render_template('register.html', message = 'Username already taken or passwords do not match')
@@ -112,9 +115,10 @@ def to_rent():
         author = request.form.get('author')
         isbn = request.form.get('isbn')
         genre = request.form.get('genre')
+        about = request.form.get('about')
         user = session['username']
         print(user)
-        db.execute('INSERT INTO books_data(username,title,author,ISBN,genre) VALUES(?,?,?,?,?)', (user,title,author,isbn,genre))
+        db.execute('INSERT INTO books_data(username,title,author,ISBN,genre, about) VALUES(%s,%s,%s,%s,%s,%s)', (user,title,author,isbn,genre,about))
         c.commit()
         return render_template('index.html', mss = 1)         
 
@@ -133,34 +137,40 @@ def forgot():
     if request.method == 'GET':
         return render_template('forgot.html')
     user = request.form.get('username')
-    email = db.execute('SELECT email FROM users WHERE username = (?) ',(request.form.get('username'),)).fetchone()
-    email = list(email)
-    for i in email:
-        if count == 0:
-            mail = i
-        count += 1
-    s = smtplib.SMTP('smtp.gmail.com', 587)
-  
-    # start TLS for security
-    s.starttls()
-  
-    # Authentication
-    s.login("batrayuvit@gmail.com", "vqazpjgojpagdyej")
-  
-    # message to be sent
-    message = f"Dear {user} your OTP is {var}"
-  
-    # sending the mail
-    s.sendmail("batrayuvit@gmail.com", mail, message)
-  
-    # terminating the session
-    s.quit()
-    return render_template('verify.html')
+    username = db.execute('SELECT username FROM users WHERE username = %s', (user,))
+    if username != 0:
+        email = db.execute('SELECT email FROM users WHERE username = %s ',(request.form.get('username'),))
+        email = db.fetchone()
+        email = list(email)
+        for i in email:
+            if count == 0:
+                mail = i
+            count += 1
+        s = smtplib.SMTP('smtp.gmail.com', 587)
+    
+        # start TLS for security
+        s.starttls()
+    
+        # Authentication
+        s.login("batrayuvit@gmail.com", "vqazpjgojpagdyej")
+    
+        # message to be sent
+        message = f"Dear {user} your OTP is {var}"
+    
+        # sending the mail
+        s.sendmail("batrayuvit@gmail.com", mail, message)
+    
+        # terminating the session
+        s.quit()
+        return render_template('verify.html')
+    else:
+        return render_template('forgot.html', wronger = 'Username is incorrect')
 
 @app.route('/browse',methods = ['POST','GET'])
 def browse():
     if request.method == 'GET':
-        value = db.execute("SELECT title,author,ISBN,genre FROM books_data").fetchall()
+        value = db.execute("SELECT title,author,ISBN,genre FROM books_data")
+        value = db.fetchall()
         l = []
         for i in value:
             j = i[2]
@@ -169,7 +179,8 @@ def browse():
         return render_template('browse.html', value = value, l = l)
     if request.method == "POST":
         a = request.form['title']
-        value = db.execute("SELECT title,author,ISBN,genre FROM books_data WHERE title LIKE ? ",('%'+a+'%',)).fetchall()
+        value = db.execute("SELECT title,author,ISBN,genre FROM books_data WHERE title LIKE %s ",('%'+a+'%',))
+        value = db.fetchall()
         if value == []:
             return render_template('message.html', messg = 'Sorry the requisite book is not available')
         l = []
@@ -201,7 +212,7 @@ def new():
     confirmation = request.form.get('confirmation')
     if password != confirmation:
         return render_template('new_password.html',password_data = 'passwords don\'t match')
-    db.execute('UPDATE users SET password = (?) WHERE username = (?)',(password,user))
+    db.execute('UPDATE users SET password = %s WHERE username = %s',(password,user))
     c.commit()
     return render_template('index.html', change = 1)
 
@@ -209,13 +220,15 @@ def new():
 def get_book(title):
     if 'username' in session:
         global user
-        data = db.execute('SELECT username FROM books_data WHERE title = ?',(title,)).fetchall()
+        data = db.execute('SELECT username FROM books_data WHERE title = %s',(title,))
+        data = db.fetchall()
         number = []
         l = set()
         for i in data:
             l.add(i[0])
         for j in l:
-            address = db.execute('SELECT phone_number,address FROM users WHERE username = ?',(j,)).fetchall()
+            address = db.execute('SELECT phone_number,address FROM users WHERE username = %s',(j,))
+            address = db.fetchall()
             print(address)
             for n in address:
                 number.append(n)
@@ -225,21 +238,25 @@ def get_book(title):
 
 @app.route('/remove', methods = ["GET","POST"])
 def remove():
-    global finish,bro
+    global finish,bro,user
     if 'username' in session:
-        global user
+        print(session['username'])
         if request.method == "GET":
-            data = db.execute('SELECT * FROM books_data WHERE username = ?', (user,)).fetchall()
+            data = db.execute('SELECT * FROM books_data WHERE username = %s', (session['username'],))
+            data = db.fetchall()
             return render_template('remove.html', data = data)
         title = request.form.get('title')
-        dat = db.execute('SELECT title FROM books_data WHERE username = ?', (user,)).fetchall()
-        for i in dat:
-            if title in i:
-                bro = True
-        if bro:
-            db.execute('DELETE FROM books_data WHERE username = ? AND title = ?', (user,title))
-            c.commit()
-            return redirect('remove')
+        dat = db.execute('SELECT title FROM books_data WHERE username = %s', (session['username'],))
+        dat = db.fetchall()
+        print(dat)
+        print('hello')
+        print(title)
+        for m in dat:
+            if title in m:
+                db.execute('DELETE FROM books_data WHERE username = %s AND title = %s', (session['username'],title, ))
+                c.commit()
+                return redirect('remove')
+            
         return render_template('remove.html', yuvit = 'Please enter exact name')
 
     return render_template('login.html')
